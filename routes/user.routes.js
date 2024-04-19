@@ -8,7 +8,7 @@ userRouter.get("/:id",async(req,res)=>{
     let id=req.params.id
 
     try{
-            const users=await UserModel.find({_id:id})
+            const users=await UserModel.findOne({_id:id})
     res.status(200).json({users})
     }
     catch(e){
