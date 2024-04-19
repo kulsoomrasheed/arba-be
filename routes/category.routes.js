@@ -67,12 +67,10 @@ categoryRouter.post("/", auth, [upload.single("profile"), auth], async (req, res
 
                   const savedProduct = await product.save();
 
-                  // Assuming your ProductModel schema has a 'category' field
                   const objId = new mongoose.Types.ObjectId(savedProduct.id);
 
-                  // Update the existing product with the new category reference
                   await ProductModel.updateOne(
-                      { _id: userID }, // Assuming this is how you identify the product
+                      { _id: userID }, 
                       { $push: { category: objId } }
                   );
 

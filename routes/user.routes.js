@@ -4,9 +4,11 @@ const bcrypt = require('bcrypt')
 var jwt = require('jsonwebtoken');
 const { UserModel } = require('../model/user.model');
 
-userRouter.get("/",async(req,res)=>{
+userRouter.get("/:id",async(req,res)=>{
+    let id=req.params.id
+
     try{
-            const users=await UserModel.find()
+            const users=await UserModel.find({_id:id})
     res.status(200).json({users})
     }
     catch(e){
