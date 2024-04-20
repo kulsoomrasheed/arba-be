@@ -11,7 +11,6 @@ const multer = require("multer");
 const fs=require('fs');
 const { url } = require('inspector');
 const { Schema } = require('mongoose');
-const { ProductModel } = require('../model/product.model');
 const { log } = require('console');
 
 const storage = multer.memoryStorage();
@@ -69,7 +68,7 @@ categoryRouter.post("/", auth, [upload.single("profile"), auth], async (req, res
 
                   const objId = new mongoose.Types.ObjectId(savedProduct.id);
 
-                  await ProductModel.updateOne(
+                  await CategoryModel.updateOne(
                       { _id: userID }, 
                       { $push: { category: objId } }
                   );
@@ -114,5 +113,23 @@ categoryRouter.post("/", auth, [upload.single("profile"), auth], async (req, res
         }
     })
 
-
+    categoryRouter.patch("/edit/:id", async (req, res) => {
+        let ID = req.params.id;
+        let payload = req.body
+        console.log("payload", payload);
+       
+        let data = await CategoryModel.findOne({ _id: ID });
+      
+        try {
+          if(data){
+              await CategoryModel.findByIdAndUpdate({ _id: ID }, payload);
+              res.send(`data with ${ID} is updated`);
+          } else{
+              res.send(`error in updating post with id ${ID}`);
+          }
+        } catch (error) {
+          res.send(error);
+        }
+      });
+      
 module.exports={categoryRouter}
